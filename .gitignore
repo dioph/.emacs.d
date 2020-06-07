@@ -1,0 +1,7 @@
+auto-save-list
+conf.el
+*.eld
+*ido*
+elpa
+smex-items
+recentf
