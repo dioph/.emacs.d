@@ -1,1 +1,420 @@
-.emacs.d/conf.org
+* Theme
+** material theme
+#+BEGIN_SRC emacs-lisp
+  (use-package material-theme
+    :ensure t
+    :init
+    (load-theme 'material t))
+#+END_SRC
+
+* UI
+** looks
+*** remove startup screen
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+#+END_SRC
+
+*** disable menus and scrollbars
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+#+END_SRC
+
+*** disable bell
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+
+*** highlight current line
+#+BEGIN_SRC emacs-lisp
+  (when window-system (add-hook 'prog-mode-hook 'hl-line-mode))
+#+END_SRC
+
+*** pretty mode
+#+BEGIN_SRC emacs-lisp
+  (when window-system
+    (use-package pretty-mode
+      :ensure t
+      :config
+      (global-pretty-mode t)))
+#+END_SRC
+
+#+BEGIN_SRC 
+(global-hl-line-mode t)
+#+END_SRC
+** functionality
+*** disable backups and auto-saves
+#+BEGIN_SRC emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+END_SRC
+
+*** change yes-or-no questions into y-or-n questions
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+* Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :init
+    (projectile-mode 1))
+#+END_SRC
+
+* Dashboard
+#+BEGIN_SRC emacs-lisp
+    (use-package dashboard
+      :ensure t
+      :config
+      (dashboard-setup-startup-hook)
+      (setq dashboard-startup-banner "~/.emacs.d/img/hell_yeah.png")
+      (setq dashboard-items '((recents  . 5)
+			      (projects . 5)))
+      (setq dashboard-banner-logo-title "hell yeah"))
+#+END_SRC
+
+* Mode line
+** spaceline
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (setq spaceline-buffer-encoding-abbrev-p nil)
+    (setq spaceline-line-column-p nil)
+    (setq spaceline-line-p nil)
+    (setq powerline-default-separator (quote arrow))
+    (spaceline-spacemacs-theme))
+#+END_SRC
+
+** cursor position
+#+BEGIN_SRC emacs-lisp
+  (setq line-number-mode t)
+  (setq columns-number-mode t)
+#+END_SRC
+
+** system monitor
+#+BEGIN_SRC emacs-lisp 
+  (use-package symon
+    :ensure t
+    :bind
+    ("s-f" . symon-mode))
+#+END_SRC
+
+* Moving around emacs
+** ivy
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t)
+#+END_SRC
+
+** scrolling
+#+BEGIN_SRC emacs-lisp
+(setq scroll-conservatively 100)
+#+END_SRC
+
+** which-key
+#+BEGIN_SRC 
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode))
+#+END_SRC
+
+** windows
+*** switch-window
+#+BEGIN_SRC emacs-lisp
+  (use-package switch-window
+    :ensure t
+    :config
+    (setq switch-window-input-style 'minibuffer)
+    (setq switch-window-increase 4)
+    (setq switch-window-threshold 2)
+    (setq switch-window-shortcut-style 'qwerty)
+    (setq switch-window-qwerty-shortcuts
+	  '("a" "s" "d" "f" "j" "k" "l"))
+    :bind
+    ([remap other-window] . switch-window))
+#+END_SRC
+
+*** follow window
+#+BEGIN_SRC emacs-lisp
+  (defun split-and-follow-horizontally ()
+    (interactive)
+    (split-window-below)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+  (defun split-and-follow-vertically ()
+    (interactive)
+    (split-window-right)
+    (balance-windows)
+    (other-window 1))
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+END_SRC
+
+** search with swiper
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind ("C-s" . 'swiper))
+#+END_SRC
+
+** ibuffer
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x b") 'ibuffer)
+#+END_SRC
+
+** line numbering
+#+BEGIN_SRC emacs-lisp
+  (use-package linum-relative
+    :ensure t
+    :config
+    (setq linum-relative-current-symbol "")
+    (add-hook 'prog-mode-hook 'linum-relative-mode))
+#+END_SRC
+
+** ido
+*** enable ido mode
+#+BEGIN_SRC emacs-lisp
+  (setq ido-enable-flex-matching nil)
+  (setq ido-create-new-buffer 'always)
+  (setq ido-everywhere t)
+  (ido-mode 1)
+#+END_SRC
+
+*** smex
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t
+    :init (smex-initialize)
+    :bind
+    ("M-x" . smex))
+#+END_SRC
+
+** avy
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind
+    ("M-s" . avy-goto-char))
+#+END_SRC
+
+* Text manipulation
+** improved kill-word
+#+BEGIN_SRC emacs-lisp
+  (defun kill-inner-word ()
+    (interactive)
+    (forward-char 1)
+    (backward-word)
+    (kill-word 1))
+  (global-set-key (kbd "C-c w k") 'kill-inner-word)
+#+END_SRC
+
+** improved copy-word
+#+BEGIN_SRC emacs-lisp
+  (defun copy-whole-word ()
+    (interactive)
+    (save-excursion
+     (forward-char 1)
+     (backward-word)
+     (kill-word 1)
+     (yank)))
+  (global-set-key (kbd "C-c w c") 'copy-whole-word)
+#+END_SRC
+
+** copy a line
+#+BEGIN_SRC emacs-lisp
+  (defun copy-whole-line ()
+    (interactive)
+    (save-excursion
+      (kill-new
+       (buffer-substring
+	(point-at-bol)
+	(point-at-eol)))))
+  (global-set-key (kbd "C-c l c") 'copy-whole-line)
+#+END_SRC
+
+** kill a line
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c l k") 'kill-whole-line)
+#+END_SRC
+
+* Minor conveniences
+** visiting the configuration
+#+BEGIN_SRC emacs-lisp
+  (defun config-visit ()
+    (interactive)
+    (find-file "~/.emacs.d/conf.org"))
+  (global-set-key (kbd "C-c e") 'config-visit)
+#+END_SRC
+
+** reloading the configuration
+#+BEGIN_SRC emacs-lisp
+  (defun config-reload ()
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/conf.org")))
+  (global-set-key (kbd "C-c r") 'config-reload)
+#+END_SRC
+
+** electric
+#+BEGIN_SRC emacs-lisp
+  (setq electric-pair-pairs '(
+			      (?\{ . ?\})
+			      (?\( . ?\))
+			      (?\[ . ?\])
+			      (?\" . ?\")
+			      ))
+  (electric-pair-mode t)
+#+END_SRC
+
+** beacon
+#+BEGIN_SRC emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1))
+#+END_SRC
+
+** show parens
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode 1)
+#+END_SRC
+
+** rainbow delimiters
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
+** expand region
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :bind ("C-q" . er/expand-region))
+#+END_SRC
+
+** hungry delete
+#+BEGIN_SRC emacs-lisp
+  (use-package hungry-delete
+    :ensure t
+    :config
+    (global-hungry-delete-mode))
+#+END_SRC
+
+* Kill ring
+** popup-kill-ring
+#+BEGIN_SRC emacs-lisp
+  (use-package popup-kill-ring
+    :ensure t
+    :bind ("M-y" . popup-kill-ring))
+#+END_SRC
+* Programming
+** codeforces
+#+BEGIN_SRC emacs-lisp
+  (defun activate-oj ()
+    (interactive)
+    (pyvenv-activate "~/venvs/oj/"))
+  (global-set-key (kbd "C-c j") 'activate-oj)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package oj
+    :ensure t)
+#+END_SRC
+
+** yasnippet
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :config
+    (use-package yasnippet-snippets
+      :ensure t)
+    (yas-reload-all))
+#+END_SRC
+
+** flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t)
+#+END_SRC
+
+** company mode
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 3))
+#+END_SRC
+
+** specific languages
+*** python
+#+BEGIN_SRC emacs-lisp
+  (use-package pyvenv
+    :ensure t)
+
+  (add-hook 'python-mode-hook 'yas-minor-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode)
+  (with-eval-after-load 'company
+    (add-hook 'python-mode-hook 'company-mode))
+#+END_SRC
+
+*** c/c++
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'c++-mode-hook 'yas-minor-mode)
+  (add-hook 'c-mode-hook 'yas-minor-mode)
+
+  (use-package flycheck-clang-analyzer
+    :ensure t
+    :config
+    (with-eval-after-load 'flycheck
+      (require 'flycheck-clang-analyzer)
+      (flycheck-clang-analyzer-setup)))
+
+  (add-hook 'c++-mode-hook 'company-mode)
+  (add-hook 'c-mode-hook 'company-mode)
+
+  (use-package company-c-headers
+    :ensure t)
+
+  (use-package company-irony
+    :ensure t
+    :config
+    (setq company-backends '((company-c-headers
+			      company-dabbrev-code
+			      company-irony))))
+
+  (use-package irony
+    :ensure t
+    :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+#+END_SRC
+
+*** emacs-lisp
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
+#+END_SRC
+
+* Diminishing modes
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t
+    :init
+    (diminish 'which-key-mode)
+    (diminish 'linum-relative-mode)
+    (diminish 'hungry-delete-mode)
+    (diminish 'beacon-mode)
+    (diminish 'rainbow-delimiters-mode)
+    (diminish 'irony-mode)
+    (diminish 'yas-minor-mode))
+#+END_SRC
