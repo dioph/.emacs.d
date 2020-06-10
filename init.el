@@ -51,7 +51,7 @@
      ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (switch-window diminish material-theme yasnippet-snippets company-irony company-c-headers flycheck-clang-analyzer company flycheck yasnippet pretty-mode hungry-delete expand-region projectile swiper popup-kill-ring linum-relative dashboard rainbow-delimiters spaceline symon beacon avy smex which-key use-package)))
+    (pyvenv oj switch-window diminish material-theme yasnippet-snippets company-irony company-c-headers flycheck-clang-analyzer company flycheck yasnippet pretty-mode hungry-delete expand-region projectile swiper popup-kill-ring linum-relative dashboard rainbow-delimiters spaceline symon beacon avy smex which-key use-package)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(symon-mode nil))
 (custom-set-faces
