@@ -40,9 +40,6 @@
       (global-pretty-mode t)))
 #+END_SRC
 
-#+BEGIN_SRC 
-(global-hl-line-mode t)
-#+END_SRC
 ** functionality
 *** disable backups and auto-saves
 #+BEGIN_SRC emacs-lisp
@@ -363,6 +360,22 @@
   (add-hook 'python-mode-hook 'flycheck-mode)
   (with-eval-after-load 'company
     (add-hook 'python-mode-hook 'company-mode))
+#+END_SRC
+
+*** assembly
+#+BEGIN_SRC emacs-lisp
+  (use-package nasm-mode
+    :ensure t
+    :mode ("\\.nasm$" "\\.asm$" "\\.s$")
+    :init
+    :config
+    (add-hook 'asm-mode-hook 'nasm-mode)
+    (add-hook 'nasm-mode-hook 'yas-minor-mode)
+    (add-hook 'nasm-mode-hook 'company-mode)
+    (add-hook 'nasm-mode-hook
+	  (lambda ()
+	    (setq tab-always-indent nil)
+	    (setq indent-tabs-mode nil))))
 #+END_SRC
 
 *** c/c++

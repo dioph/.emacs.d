@@ -51,7 +51,7 @@
      ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (pyvenv oj switch-window diminish material-theme yasnippet-snippets company-irony company-c-headers flycheck-clang-analyzer company flycheck yasnippet pretty-mode hungry-delete expand-region projectile swiper popup-kill-ring linum-relative dashboard rainbow-delimiters spaceline symon beacon avy smex which-key use-package)))
+    (nasm-mode pyvenv oj switch-window diminish material-theme yasnippet-snippets company-irony company-c-headers flycheck-clang-analyzer company flycheck yasnippet pretty-mode hungry-delete expand-region projectile swiper popup-kill-ring linum-relative dashboard rainbow-delimiters spaceline symon beacon avy smex which-key use-package)))
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(symon-mode nil))
 (custom-set-faces
@@ -59,4 +59,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#263238" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 108 :width normal :foundry "CTDB" :family "Fira Code")))))
+ '(default ((t (:inherit nil :stipple nil :background "#263238" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 105 :width normal :foundry "CTDB" :family "Cascadia Code")))))
